@@ -1,0 +1,223 @@
+// 第四批相机库：在已有 200 台基础上补充 100 台，型号名称与已有资料严格去重。
+
+const presets = {
+  slr: {
+    autoFocus: false,
+    autoExposure: false,
+    autoLevel: 5,
+    weight: 620,
+    size: '约 140×90×55',
+    flash: '否（外接闪光灯）',
+    repairLevel: 3,
+    newbieLevel: 3,
+    scenes: ['街拍', '人文', '风光'],
+    risk: '快门、测光、海绵和机身密封老化需检查；机械状态比外观更重要',
+    recommendation: '保留完整手动体验，适合系统学习曝光与镜头控制',
+  },
+  electronicSlr: {
+    autoFocus: false,
+    autoExposure: true,
+    autoLevel: 3,
+    weight: 600,
+    size: '约 140×90×55',
+    flash: '否（外接闪光灯）',
+    repairLevel: 3,
+    newbieLevel: 4,
+    scenes: ['旅行', '街拍', '日常'],
+    risk: '电子快门、测光和电池仓需检查；长期闲置机身要做完整测试',
+    recommendation: '自动曝光降低入门门槛，同时保留一定手动控制空间',
+  },
+  compact: {
+    autoFocus: true,
+    autoExposure: true,
+    autoLevel: 1,
+    weight: 260,
+    size: '约 120×70×45',
+    flash: '是',
+    repairLevel: 4,
+    newbieLevel: 5,
+    scenes: ['日常', '旅行', '街拍'],
+    risk: '镜头滑盖、变焦马达、闪光灯、AF 和电池触点容易老化',
+    recommendation: '体积小、操作快，适合作为随身胶片机',
+  },
+  rangefinder: {
+    autoFocus: false,
+    autoExposure: false,
+    autoLevel: 5,
+    weight: 850,
+    size: '约 145×90×60',
+    flash: '否（外接闪光灯）',
+    repairLevel: 4,
+    newbieLevel: 3,
+    scenes: ['街拍', '人像', '旅行'],
+    risk: '测距机构、光学系统、机械快门与后背密封需检查；不同版本维护难度不同',
+    recommendation: '取景器清晰、快门安静，适合街拍与旅行；购买前应优先检查测距联动与快门状态',
+  },
+  medium: {
+    autoFocus: false,
+    autoExposure: false,
+    autoLevel: 5,
+    weight: 1100,
+    size: '约 150×110×100',
+    flash: '否（外接闪光灯）',
+    repairLevel: 4,
+    newbieLevel: 3,
+    scenes: ['人像', '风光', '棚拍'],
+    risk: '机身、过片、后背密封和镜头快门需逐项检查；体积重量较大',
+    recommendation: '画幅更大、细节与层次优秀，适合认真拍摄和棚拍工作流',
+  },
+  instant: {
+    autoFocus: false,
+    autoExposure: true,
+    autoLevel: 3,
+    weight: 720,
+    size: '约 150×110×95',
+    flash: '部分版本自带',
+    repairLevel: 4,
+    newbieLevel: 4,
+    scenes: ['聚会', '日常', '创意记录'],
+    risk: '电池、滚轮、闪光灯和相纸兼容性需检查；相纸保存条件影响成像',
+    recommendation: '即时成像反馈强，适合社交记录和实验性拍摄',
+  },
+};
+
+const makeCamera = (brand, name, priceLow, priceHigh, presetName, extra = {}) => ({
+  ...presets[presetName],
+  name,
+  brand,
+  priceLow,
+  priceHigh,
+  lens: '可换镜头或固定镜头系统；具体版本与兼容性需核对',
+  validation: '规格可核验；价格需App内复核',
+  ...extra,
+});
+
+const rows = [
+  // Konica 15
+  ['Konica', 'Konica AutoReflex T3', 600, 1500, 'electronicSlr', { lens: 'Konica AR卡口；光圈/快门优先自动曝光' }],
+  ['Konica', 'Konica AutoReflex T3N', 700, 1700, 'electronicSlr', { lens: 'Konica AR卡口；T3改进版自动曝光单反' }],
+  ['Konica', 'Konica AutoReflex T4', 700, 1800, 'electronicSlr', { lens: 'Konica AR卡口；电子快门与光圈优先' }],
+  ['Konica', 'Konica TC', 400, 1000, 'electronicSlr', { lens: 'Konica AR卡口；轻量化自动曝光单反' }],
+  ['Konica', 'Konica FS-1', 500, 1300, 'electronicSlr', { lens: 'Konica AR卡口；内置电机过片单反' }],
+  ['Konica', 'Konica FC-1', 500, 1200, 'electronicSlr', { lens: 'Konica AR卡口；光圈优先与程序曝光' }],
+  ['Konica', 'Konica FT-1', 500, 1300, 'electronicSlr', { lens: 'Konica AR卡口；带电机过片的自动曝光单反' }],
+  ['Konica', 'Konica FP-1', 400, 1100, 'electronicSlr', { lens: 'Konica AR卡口；程序曝光入门单反' }],
+  ['Konica', 'Konica Acom-1', 350, 900, 'electronicSlr', { lens: 'Konica AR卡口；轻量化程序/光圈优先机身' }],
+  ['Konica', 'Konica Big Mini BM-201', 600, 1600, 'compact', { weight: 190, size: '118×63×31', lens: '固定35mm f/3.5；滑盖自动对焦便携机' }],
+  ['Konica', 'Konica Big Mini BM-301', 500, 1300, 'compact', { weight: 220, size: '120×65×35', lens: '固定35mm；自动对焦与内置闪光灯' }],
+  ['Konica', 'Konica Hexar AF', 2500, 6500, 'compact', { weight: 605, size: '140×75×72', lens: '固定35mm f/2；静音自动对焦便携机' }],
+  ['Konica', 'Konica Hexar RF', 2800, 7000, 'electronicSlr', { autoFocus: false, autoExposure: true, autoLevel: 3, weight: 590, size: '139×80×38', lens: 'Konica M卡口；旁轴式可换镜头系统' }],
+  ['Konica', 'Konica C35 EF', 500, 1300, 'compact', { weight: 370, size: '116×70×55', lens: '固定38mm f/2.8；旁轴式自动曝光便携机' }],
+  ['Konica', 'Konica C35 AF', 500, 1300, 'compact', { weight: 400, size: '122×75×58', lens: '固定38mm；早期自动对焦便携机' }],
+
+  // Ricoh 10
+  ['Ricoh', 'Ricoh XR-2', 500, 1300, 'electronicSlr', { lens: 'Pentax K卡口；光圈优先与手动曝光' }],
+  ['Ricoh', 'Ricoh XR-7', 400, 1100, 'electronicSlr', { lens: 'Pentax K卡口；多模式自动曝光' }],
+  ['Ricoh', 'Ricoh XR-P', 500, 1300, 'electronicSlr', { lens: 'Pentax K卡口；程序与光圈优先' }],
+  ['Ricoh', 'Ricoh XR-8', 350, 900, 'electronicSlr', { lens: 'Pentax K卡口；入门级自动曝光单反' }],
+  ['Ricoh', 'Ricoh KR-5', 300, 800, 'slr', { lens: 'Pentax K卡口；机械快门手动单反' }],
+  ['Ricoh', 'Ricoh KR-10', 350, 900, 'electronicSlr', { lens: 'Pentax K卡口；光圈优先单反' }],
+  ['Ricoh', 'Ricoh 500G', 600, 1500, 'electronicSlr', { autoFocus: false, autoExposure: true, autoLevel: 3, weight: 560, size: '121×76×63', lens: '固定40mm f/2.8；旁轴测距取景' }],
+  ['Ricoh', 'Ricoh 500GX', 700, 1800, 'electronicSlr', { autoFocus: false, autoExposure: true, autoLevel: 3, weight: 560, size: '121×76×63', lens: '固定40mm f/2.8；带手动曝光旁轴' }],
+  ['Ricoh', 'Ricoh FF-3 AF', 400, 1100, 'compact', { weight: 330, size: '125×70×50', lens: '固定35mm；自动对焦与内置闪光灯' }],
+  ['Ricoh', 'Ricoh R1', 1200, 3000, 'compact', { weight: 145, size: '117×63×28', lens: '固定30mm/24mm全景模式；超薄便携机' }],
+
+  // Fujica / Fujifilm 10
+  ['Fujica', 'Fujica ST-801', 600, 1500, 'slr', { lens: 'M42螺口；LED测光手动单反' }],
+  ['Fujica', 'Fujica ST-901', 700, 1700, 'electronicSlr', { lens: 'M42螺口；电子快门与光圈优先' }],
+  ['Fujica', 'Fujica ST-F', 350, 900, 'slr', { lens: 'M42螺口；入门手动单反' }],
+  ['Fujica', 'Fujica AX-3', 500, 1200, 'electronicSlr', { lens: 'Fujica X卡口；光圈优先自动曝光' }],
+  ['Fujica', 'Fujica AX-5', 600, 1500, 'electronicSlr', { lens: 'Fujica X卡口；多模式自动曝光' }],
+  ['Fujica', 'Fujica AZ-1', 400, 1000, 'electronicSlr', { lens: 'Fujica X卡口；程序曝光单反' }],
+  ['Fujifilm', 'Fujifilm GS645 Professional', 2500, 6500, 'rangefinder', { autoExposure: false, autoLevel: 5, weight: 850, size: '165×115×95', lens: '固定60mm f/4；6×4.5中画幅旁轴' }],
+  ['Fujifilm', 'Fujifilm GA645Zi', 4200, 10500, 'compact', { autoFocus: true, autoExposure: true, autoLevel: 1, weight: 1530, size: '168×120×112', lens: '固定55mm f/4.5；6×4.5中画幅自动变焦机' }],
+  ['Fujifilm', 'Fujifilm GA645W', 3500, 9000, 'compact', { autoFocus: true, autoExposure: true, autoLevel: 1, weight: 1530, size: '168×120×112', lens: '固定45mm f/4；6×4.5中画幅广角自动机' }],
+  ['Fujifilm', 'Fujifilm Natura Classica', 1800, 4800, 'compact', { weight: 255, size: '116×63×37', lens: '28–56mm f/2.8–5.4电动变焦；高感便携机' }],
+
+  // Kodak 8
+  ['Kodak', 'Kodak S100 EF', 250, 700, 'compact', { weight: 180, size: '112×62×39', lens: '固定35mm；自动曝光与内置闪光灯' }],
+  ['Kodak', 'Kodak S200 EF', 250, 700, 'compact', { weight: 200, size: '116×64×42', lens: '固定35mm；自动对焦便携机' }],
+  ['Kodak', 'Kodak KB10', 150, 450, 'compact', { weight: 150, size: '115×64×39', lens: '固定35mm；定焦自动曝光便携机' }],
+  ['Kodak', 'Kodak KB28', 180, 500, 'compact', { weight: 180, size: '120×67×42', lens: '固定28mm；轻量化自动曝光便携机' }],
+  ['Kodak', 'Kodak Cameo Focus', 200, 600, 'compact', { weight: 175, size: '118×63×36', lens: '固定30mm；定焦便携机' }],
+  ['Kodak', 'Kodak Star 435', 200, 600, 'compact', { weight: 205, size: '119×66×42', lens: '固定35mm；自动对焦与内置闪光灯' }],
+  ['Kodak', 'Kodak Advantix 4100ix', 300, 900, 'compact', { weight: 245, size: '128×70×47', lens: 'APS格式25–50mm电动变焦；内置闪光灯' }],
+  ['Kodak', 'Kodak Advantix 3200ix', 250, 800, 'compact', { weight: 225, size: '122×68×45', lens: 'APS格式25–50mm电动变焦；自动对焦' }],
+
+  // Rollei 10
+  ['Rollei', 'Rollei 35 RF', 1800, 4500, 'rangefinder', { autoExposure: true, autoLevel: 3, weight: 690, size: '135×78×42', lens: 'Rollei/Leica M卡口；旁轴可换镜头' }],
+  ['Rollei', 'Rollei 35S', 1500, 4000, 'slr', { autoFocus: false, autoExposure: false, autoLevel: 5, weight: 370, size: '97×60×32', lens: '固定40mm f/2.8 Sonnar；折叠式便携机' }],
+  ['Rollei', 'Rollei 35T', 1200, 3200, 'slr', { autoFocus: false, autoExposure: false, autoLevel: 5, weight: 370, size: '97×60×32', lens: '固定40mm f/3.5 Tessar；折叠式便携机' }],
+  ['Rollei', 'Rollei 35B', 800, 2200, 'slr', { autoFocus: false, autoExposure: false, autoLevel: 5, weight: 370, size: '97×60×32', lens: '固定40mm；机械便携机' }],
+  ['Rollei', 'Rollei 35TE', 900, 2500, 'electronicSlr', { autoFocus: false, autoExposure: true, autoLevel: 3, weight: 370, size: '97×60×32', lens: '固定40mm；带电子测光便携机' }],
+  ['Rollei', 'Rollei 35SE', 1800, 4800, 'electronicSlr', { autoFocus: false, autoExposure: true, autoLevel: 3, weight: 370, size: '97×60×32', lens: '固定40mm f/2.8 Sonnar；带电子测光' }],
+  ['Rollei', 'Rollei 35 LED', 600, 1600, 'electronicSlr', { autoFocus: false, autoExposure: true, autoLevel: 3, weight: 370, size: '97×60×32', lens: '固定40mm；LED测光便携机' }],
+  ['Rollei', 'Rollei 35 Classic', 2500, 6500, 'slr', { autoFocus: false, autoExposure: false, autoLevel: 5, weight: 375, size: '97×60×32', lens: '固定40mm f/2.8；复刻版机械便携机' }],
+  ['Rollei', 'Rolleiflex 2.8F', 5000, 14000, 'medium', { weight: 1200, size: '105×145×108', lens: '固定75mm f/2.8；6×6双反相机' }],
+  ['Rollei', 'Rolleicord Vb', 2200, 6500, 'medium', { weight: 1100, size: '100×135×95', lens: '固定75mm f/3.5；6×6双反相机' }],
+
+  // Hasselblad 10
+  ['Hasselblad', 'Hasselblad 500C', 5000, 13000, 'medium', { weight: 1250, size: '150×145×110', lens: 'Hasselblad V卡口；6×6模块化中画幅' }],
+  ['Hasselblad', 'Hasselblad 500EL/M', 3500, 9500, 'medium', { weight: 1500, size: '150×145×120', lens: 'Hasselblad V卡口；电动过片模块化中画幅' }],
+  ['Hasselblad', 'Hasselblad 501C', 6500, 16000, 'medium', { weight: 1250, size: '150×145×110', lens: 'Hasselblad V卡口；改进版6×6系统' }],
+  ['Hasselblad', 'Hasselblad 501CM', 7000, 18000, 'medium', { weight: 1250, size: '150×145×110', lens: 'Hasselblad V卡口；后期经典模块化机身' }],
+  ['Hasselblad', 'Hasselblad 503CX', 7000, 18000, 'medium', { weight: 1250, size: '150×145×110', lens: 'Hasselblad V卡口；支持TTL闪光系统' }],
+  ['Hasselblad', 'Hasselblad 503CW', 9500, 24000, 'medium', { weight: 1250, size: '150×145×110', lens: 'Hasselblad V卡口；高规格模块化机身' }],
+  ['Hasselblad', 'Hasselblad 1600F', 5000, 14000, 'medium', { weight: 1050, size: '150×145×95', lens: 'Hasselblad V卡口；早期6×6单反系统' }],
+  ['Hasselblad', 'Hasselblad 1000F', 4500, 12000, 'medium', { weight: 1050, size: '150×145×95', lens: 'Hasselblad V卡口；早期模块化中画幅' }],
+  ['Hasselblad', 'Hasselblad SWC', 8000, 22000, 'medium', { weight: 1380, size: '145×105×103', lens: '固定38mm Biogon；6×6超广角旁轴' }],
+  ['Hasselblad', 'Hasselblad XPan', 12000, 32000, 'rangefinder', { weight: 1550, size: '166×81×56', lens: 'Hasselblad XPan卡口；135与全景幅旁轴' }],
+
+  // Mamiya 10
+  ['Mamiya', 'Mamiya C220', 1800, 5000, 'medium', { weight: 1700, size: '125×165×110', lens: 'Mamiya TLR卡口；6×6双反可换镜头' }],
+  ['Mamiya', 'Mamiya C330', 2200, 6000, 'medium', { weight: 1800, size: '125×165×110', lens: 'Mamiya TLR卡口；带联动过片的双反' }],
+  ['Mamiya', 'Mamiya RB67 Pro', 2500, 7000, 'medium', { weight: 2400, size: '145×175×125', lens: 'Mamiya RB卡口；6×7旋转后背系统' }],
+  ['Mamiya', 'Mamiya RB67 Pro SD', 3000, 8500, 'medium', { weight: 2400, size: '145×175×125', lens: 'Mamiya RB卡口；改进版6×7系统' }],
+  ['Mamiya', 'Mamiya RZ67 Pro', 3000, 9000, 'medium', { weight: 2400, size: '150×175×125', lens: 'Mamiya RZ卡口；电子镜间快门系统' }],
+  ['Mamiya', 'Mamiya RZ67 Pro IID', 5000, 13000, 'medium', { weight: 2400, size: '150×175×125', lens: 'Mamiya RZ卡口；后期电子6×7系统' }],
+  ['Mamiya', 'Mamiya 645 1000S', 1300, 3500, 'medium', { weight: 1200, size: '160×110×100', lens: 'Mamiya 645卡口；6×4.5中画幅单反' }],
+  ['Mamiya', 'Mamiya 645 AF', 2500, 6500, 'compact', { autoFocus: true, autoExposure: true, autoLevel: 1, weight: 1300, size: '160×110×100', lens: 'Mamiya 645 AF卡口；自动对焦中画幅' }],
+  ['Mamiya', 'Mamiya 645 Pro', 1800, 5000, 'medium', { weight: 1300, size: '160×110×100', lens: 'Mamiya 645卡口；模块化中画幅单反' }],
+  ['Mamiya', 'Mamiya 7 II', 5500, 14000, 'rangefinder', { autoExposure: true, autoLevel: 3, weight: 1210, size: '159×112×80', lens: 'Mamiya 7卡口；6×7中画幅旁轴' }],
+
+  // Bronica 10
+  ['Bronica', 'Bronica S2', 1800, 4800, 'medium', { weight: 1300, size: '145×105×100', lens: 'Bronica S卡口；6×6模块化中画幅' }],
+  ['Bronica', 'Bronica EC', 1500, 4200, 'medium', { weight: 1350, size: '145×105×100', lens: 'Bronica EC卡口；电子快门中画幅' }],
+  ['Bronica', 'Bronica ETR', 1200, 3500, 'medium', { weight: 1100, size: '150×110×105', lens: 'Bronica ETR卡口；6×4.5中画幅系统' }],
+  ['Bronica', 'Bronica ETRS', 1300, 3800, 'medium', { weight: 1100, size: '150×110×105', lens: 'Bronica ETR卡口；模块化6×4.5系统' }],
+  ['Bronica', 'Bronica ETRC', 1400, 4000, 'medium', { weight: 1150, size: '150×110×105', lens: 'Bronica ETR卡口；带固定后背的中画幅' }],
+  ['Bronica', 'Bronica SQ', 1600, 4500, 'medium', { weight: 1250, size: '145×105×105', lens: 'Bronica SQ卡口；6×6模块化系统' }],
+  ['Bronica', 'Bronica SQ-A', 2000, 5500, 'medium', { weight: 1250, size: '145×105×105', lens: 'Bronica SQ卡口；改进版6×6系统' }],
+  ['Bronica', 'Bronica SQ-B', 1800, 5000, 'medium', { weight: 1250, size: '145×105×105', lens: 'Bronica SQ卡口；手动6×6模块化机身' }],
+  ['Bronica', 'Bronica GS-1', 2500, 7000, 'medium', { weight: 1800, size: '160×130×120', lens: 'Bronica GS卡口；6×7中画幅系统' }],
+  ['Bronica', 'Bronica RF645', 3000, 8000, 'rangefinder', { autoExposure: true, autoLevel: 3, weight: 950, size: '150×120×75', lens: 'Bronica RF卡口；6×4.5旁轴系统' }],
+
+  // Praktica / Zenit 10
+  ['Praktica', 'Praktica MTL5', 250, 700, 'slr', { lens: 'M42螺口；机械快门手动单反' }],
+  ['Praktica', 'Praktica MTL50', 250, 700, 'slr', { lens: 'M42螺口；LED测光机械单反' }],
+  ['Praktica', 'Praktica LTL3', 250, 650, 'slr', { lens: 'M42螺口；入门机械单反' }],
+  ['Praktica', 'Praktica PLC3', 350, 900, 'electronicSlr', { lens: 'M42螺口；电子快门与测光单反' }],
+  ['Praktica', 'Praktica BX20', 300, 800, 'electronicSlr', { lens: 'Praktica B卡口；光圈优先自动曝光' }],
+  ['Praktica', 'Praktica BX20s', 350, 900, 'electronicSlr', { lens: 'Praktica B卡口；改进版光圈优先单反' }],
+  ['Praktica', 'Praktica B200', 350, 900, 'electronicSlr', { lens: 'Praktica B卡口；多模式电子单反' }],
+  ['Praktica', 'Praktica BC1', 350, 900, 'electronicSlr', { lens: 'Praktica B卡口；光圈优先与手动曝光' }],
+  ['Zenit', 'Zenit-E', 250, 700, 'slr', { lens: 'M42螺口；机械快门手动单反' }],
+  ['Zenit', 'Zenit-12XP', 300, 800, 'slr', { lens: 'M42螺口；带测光的后期机械单反' }],
+
+  // Polaroid / Lomo 7
+  ['Polaroid', 'Polaroid Land Camera 180', 1800, 5000, 'instant', { weight: 1250, size: '165×110×95', lens: '固定114mm f/4.5；600系列即时成像系统' }],
+  ['Polaroid', 'Polaroid Land Camera 195', 2200, 6000, 'instant', { weight: 1250, size: '165×110×95', lens: '固定114mm f/3.8；手动控制即时成像' }],
+  ['Polaroid', 'Polaroid OneStep 600', 250, 800, 'instant', { weight: 760, size: '155×100×95', lens: '固定焦段；600相纸即时成像' }],
+  ['Polaroid', 'Polaroid SX-70', 1200, 3800, 'instant', { weight: 780, size: '175×100×45', lens: '固定116mm；折叠式即时成像机' }],
+  ['Polaroid', 'Polaroid SLR 680', 1800, 5000, 'instant', { autoFocus: true, autoExposure: true, autoLevel: 1, weight: 780, size: '175×100×45', lens: '固定116mm；声纳自动对焦即时成像' }],
+  ['Lomography', 'Lomo LC-Wide', 900, 2200, 'slr', { autoFocus: false, autoExposure: false, autoLevel: 5, weight: 350, size: '110×68×56', lens: '固定17mm超广角；区域对焦创意便携机' }],
+  ['Lomography', 'Lomo LC-A 120', 1500, 3800, 'medium', { weight: 460, size: '125×105×70', lens: '固定38mm f/4.5；6×6折叠中画幅便携机' }],
+];
+
+export const CAMERA_EXPANSION_3 = rows.map(([brand, name, priceLow, priceHigh, presetName, extra]) => (
+  makeCamera(brand, name, priceLow, priceHigh, presetName, extra)
+));
+
+if (CAMERA_EXPANSION_3.length !== 100 || new Set(CAMERA_EXPANSION_3.map((camera) => camera.name)).size !== 100) {
+  throw new Error('第四批相机库必须包含 100 个唯一型号');
+}
