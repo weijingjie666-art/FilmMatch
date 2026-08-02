@@ -1,0 +1,25 @@
+node_modules/
+dist/
+outputs/
+.codex_build_*.mjs
+.codex_extract_source.mjs
+.codex_inspect_source.mjs
+.codex_*.mjs
+
+# Local environment and editor files
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Temporary logs and test artifacts
+*.log
+coverage/
+playwright-report/
+test-results/
+
+# Historical local source archives
+FilmMatch-project-source-*.zip

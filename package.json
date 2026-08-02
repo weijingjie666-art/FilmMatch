@@ -1,0 +1,14 @@
+{
+  "name": "filmmatch-mvp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node build-static.mjs",
+    "dev": "node serve.mjs",
+    "preview": "node serve.mjs"
+  }
+}
